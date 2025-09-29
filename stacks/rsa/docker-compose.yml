@@ -1,6 +1,6 @@
 services:
   quimera_securonix_orchestrator:
-    image: registry.ish.com.br/quimera_orchestrator:5.0.0
+    image: registry.ish.com.br/quimera_orchestrator:6.0.0
     # env_file:
     #   - stack.env
     ports:
