@@ -1,0 +1,89 @@
+services:
+  quimera_securonix_orchestrator:
+    image: registry.ish.com.br/${IMAGE_ORCHESTRATOR}
+    env_file:
+      - stack.env
+    ports:
+      - "${PORT_REMOTE}1:1880"
+    networks:
+      quimera_prd:
+        aliases: ["mosquitto","mongodborquestrador"]
+    volumes:
+      - quimera_orchestrator:/data
+    restart: always
+    depends_on:
+      quimera_mqtt:
+        condition: service_started
+      mongodb_orchestrator:
+        condition: service_started
+
+
+  quimera_snow:
+    image: registry.ish.com.br/${IMAGE_SNOW}
+    env_file:
+      - stack.env
+    ports:
+      - "${PORT_REMOTE}4:1880"
+    networks: [quimera_prd]
+    volumes:
+      - quimera_snow:/data
+    restart: always
+    depends_on:
+      quimera_mqtt:
+        condition: service_started
+      mongodb_orchestrator:
+        condition: service_started
+
+  quimera_rich:
+    image: registry.ish.com.br/${IMAGE_RICH}
+    env_file:
+      - stack.env
+    ports:
+      - "${PORT_REMOTE}3:1880"
+    networks:
+      - quimera_rich
+      - quimera_prd
+    volumes:
+      - quimera_rich:/data
+    restart: always
+    depends_on:
+      quimera_mqtt:
+        condition: service_started
+
+  mongodb_orchestrator:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ctiuser
+      MONGO_INITDB_ROOT_PASSWORD: samaster
+      MONGO_INITDB_DATABASE: feedcti
+    # Evite path relativo; prefira volume nomeado:
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "${PORT_REMOTE}5:27017"
+    networks: [quimera_prd]
+    restart: always
+
+  quimera_mqtt:
+    image: eclipse-mosquitto:2.0
+    expose: ["1883","9001"]
+    volumes:
+      - quimera_mqtt:/mosquitto/log/
+      - quimera_mqtt:/mosquitto/data/
+    networks: [quimera_prd]
+    restart: always
+
+volumes:
+  quimera_colector:
+  quimera_snow:
+  quimera_rich:
+  quimera_mqtt:
+  quimera_orchestrator:
+  quimera_colector_2:
+  mongo_data:
+
+networks:
+  quimera_prd:
+    external: true
+  quimera_rich:
+    external: true
