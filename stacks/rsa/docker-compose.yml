@@ -1,6 +1,6 @@
 services:
   quimera_securonix_orchestrator:
-    image: registry.ish.com.br/${IMAGE_ORCHESTRATOR}
+    image: registry.ish.com.br/quimera_orchestrator:5.0.0
     env_file:
       - stack.env
     ports:
@@ -19,7 +19,7 @@ services:
 
 
   quimera_snow:
-    image: registry.ish.com.br/${IMAGE_SNOW}
+    image: registry.ish.com.br/quimera_snow:latest
     env_file:
       - stack.env
     ports:
@@ -35,7 +35,7 @@ services:
         condition: service_started
 
   quimera_rich:
-    image: registry.ish.com.br/${IMAGE_RICH}
+    image: registry.ish.com.br/quimera_rich:latest
     env_file:
       - stack.env
     ports:
