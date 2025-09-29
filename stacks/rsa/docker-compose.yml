@@ -1,8 +1,8 @@
 services:
   quimera_securonix_orchestrator:
     image: registry.ish.com.br/quimera_orchestrator:5.0.0
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     ports:
       - "${PORT_REMOTE}1:1880"
     networks:
@@ -20,8 +20,8 @@ services:
 
   quimera_snow:
     image: registry.ish.com.br/quimera_snow:latest
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     ports:
       - "${PORT_REMOTE}4:1880"
     networks: [quimera_prd]
@@ -36,8 +36,8 @@ services:
 
   quimera_rich:
     image: registry.ish.com.br/quimera_rich:latest
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     ports:
       - "${PORT_REMOTE}3:1880"
     networks:
